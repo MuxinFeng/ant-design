@@ -151,10 +151,10 @@ const InputNumber = React.forwardRef<HTMLInputElement, InputNumberProps>((props,
         style={props.style}
         onMouseUp={() => inputRef.current!.focus()}
       >
-        {prefix && <span className={`${prefixCls}-prefix`}>{prefix}</span>}
         {cloneElement(element, {
           style: null,
           value: props.value,
+          prefix: prefix && <span className={`${prefixCls}-prefix`}>{prefix}</span>,
           onFocus: (event: React.FocusEvent<HTMLInputElement>) => {
             setFocus(true);
             props.onFocus?.(event);
@@ -196,21 +196,24 @@ const InputNumber = React.forwardRef<HTMLInputElement, InputNumberProps>((props,
     element = (
       <div className={mergedGroupClassName} style={props.style}>
         <div className={mergedWrapperClassName}>
-          {addonBeforeNode && (
-            <NoCompactStyle>
-              <NoFormStyle status override>
-                {addonBeforeNode}
-              </NoFormStyle>
-            </NoCompactStyle>
-          )}
-          {cloneElement(element, { style: null, disabled: mergedDisabled })}
-          {addonAfterNode && (
-            <NoCompactStyle>
-              <NoFormStyle status override>
-                {addonAfterNode}
-              </NoFormStyle>
-            </NoCompactStyle>
-          )}
+          {cloneElement(element, {
+            style: null,
+            disabled: mergedDisabled,
+            addonBefore: addonBeforeNode && (
+              <NoCompactStyle>
+                <NoFormStyle status override>
+                  {addonBeforeNode}
+                </NoFormStyle>
+              </NoCompactStyle>
+            ),
+            addonAfterNode: addonAfterNode && (
+              <NoCompactStyle>
+                <NoFormStyle status override>
+                  {addonAfterNode}
+                </NoFormStyle>
+              </NoCompactStyle>
+            ),
+          })}
         </div>
       </div>
     );
