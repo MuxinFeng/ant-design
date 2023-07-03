@@ -43,6 +43,11 @@ export interface InternalSelectProps<
   disabled?: boolean;
   mode?: 'multiple' | 'tags' | 'SECRET_COMBOBOX_MODE_DO_NOT_USE';
   bordered?: boolean;
+  /**
+   * @deprecated `showArrow` is deprecated which will be removed in next major version. It will be a
+   *   default behavior, you can hide it by setting `suffixIcon` to null.
+   */
+  showArrow?: boolean;
 }
 
 export interface SelectProps<
@@ -50,7 +55,7 @@ export interface SelectProps<
   OptionType extends BaseOptionType | DefaultOptionType = DefaultOptionType,
 > extends Omit<
     InternalSelectProps<ValueType, OptionType>,
-    'inputIcon' | 'mode' | 'getInputElement' | 'getRawInputElement' | 'backfill' | 'placement'
+    'mode' | 'getInputElement' | 'getRawInputElement' | 'backfill' | 'placement'
   > {
   placement?: SelectCommonPlacement;
   mode?: 'multiple' | 'tags';
@@ -80,7 +85,6 @@ const InternalSelect = <OptionType extends BaseOptionType | DefaultOptionType = 
     disabled: customDisabled,
     notFoundContent,
     status: customStatus,
-    showArrow,
     ...props
   }: SelectProps<OptionType>,
   ref: React.Ref<BaseSelectRef>,
@@ -114,8 +118,7 @@ const InternalSelect = <OptionType extends BaseOptionType | DefaultOptionType = 
   }, [props.mode]);
 
   const isMultiple = mode === 'multiple' || mode === 'tags';
-  const mergedShowArrow =
-    showArrow !== undefined ? showArrow : props.loading || !(isMultiple || mode === 'combobox');
+  const showSuffixIcon = props.loading || !(isMultiple || mode === 'combobox');
 
   // =================== Warning =====================
   warning(
@@ -149,7 +152,7 @@ const InternalSelect = <OptionType extends BaseOptionType | DefaultOptionType = 
     multiple: isMultiple,
     hasFeedback,
     feedbackIcon,
-    showArrow: mergedShowArrow,
+    showSuffixIcon,
     prefixCls,
   });
 
@@ -205,7 +208,7 @@ const InternalSelect = <OptionType extends BaseOptionType | DefaultOptionType = 
       prefixCls={prefixCls}
       placement={getPlacement()}
       direction={direction}
-      inputIcon={suffixIcon}
+      suffixIcon={suffixIcon}
       menuItemSelectedIcon={itemIcon}
       removeIcon={removeIcon}
       clearIcon={clearIcon}
@@ -213,7 +216,6 @@ const InternalSelect = <OptionType extends BaseOptionType | DefaultOptionType = 
       className={mergedClassName}
       getPopupContainer={getPopupContainer || getContextPopupContainer}
       dropdownClassName={rcSelectRtlDropdownClassName}
-      showArrow={hasFeedback || showArrow}
       disabled={mergedDisabled}
     />
   );

@@ -30,10 +30,10 @@ describe('Select', () => {
   });
 
   it('should have default notFoundContent', () => {
-    const { container } = render(<Select mode="multiple" />);
+    const { container, baseElement } = render(<Select mode="multiple" />);
     toggleOpen(container);
     expect(container.querySelectorAll('.ant-select-item-option').length).toBe(0);
-    expect(container.querySelectorAll('.ant-empty').length).toBeTruthy();
+    expect(baseElement.querySelectorAll('.ant-empty').length).toBeTruthy();
   });
 
   it('should support set notFoundContent to null', () => {
@@ -51,7 +51,7 @@ describe('Select', () => {
   });
 
   it('should not have notFoundContent when mode is combobox and notFoundContent is set', () => {
-    const { container } = render(
+    const { container, baseElement } = render(
       <Select
         mode={Select.SECRET_COMBOBOX_MODE_DO_NOT_USE as SelectProps['mode']}
         notFoundContent="not at all"
@@ -59,7 +59,7 @@ describe('Select', () => {
     );
     toggleOpen(container);
     expect(container.querySelector('.ant-select-item-option')).toBeFalsy();
-    expect(container.querySelector('.ant-select-item-empty')).toHaveTextContent('not at all');
+    expect(baseElement.querySelector('.ant-select-item-empty')).toHaveTextContent('not at all');
   });
 
   it('should be controlled by open prop', () => {
@@ -76,10 +76,10 @@ describe('Select', () => {
         </Select>
       );
     };
-    const { container } = render(<TestComponent />);
+    const { container, baseElement } = render(<TestComponent />);
     expect(container.querySelector('.ant-select-dropdown')).toBeFalsy();
     toggleOpen(container);
-    expect(container.querySelectorAll('.ant-select-dropdown').length).toBe(1);
+    expect(baseElement.querySelectorAll('.ant-select-dropdown').length).toBe(1);
     expect(onDropdownVisibleChange).toHaveBeenLastCalledWith(true);
   });
 
